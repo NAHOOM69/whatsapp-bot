@@ -1,0 +1,8 @@
+node_modules/
+node_modules
+npm-debug.log
+.wwebjs_auth
+tokens
+*.json
+!package.json
+!package-lock.json

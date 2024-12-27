@@ -1,0 +1,21 @@
+2024/12/27-13:59:16.643 2dc4 Reusing MANIFEST D:\whatsapp-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2024/12/27-13:59:16.643 2dc4 Recovering log #153
+2024/12/27-13:59:16.671 2dc4 Reusing old log D:\whatsapp-bot\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000153.log 
+2024/12/27-13:59:18.690 3360 Manual compaction at level-0 from '\x00\x1b\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x1c\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/12/27-13:59:18.764 2dc4 Level-0 table #162: started
+2024/12/27-13:59:18.822 2dc4 Level-0 table #162: 270313 bytes OK
+2024/12/27-13:59:18.846 2dc4 Delete type=0 #153
+2024/12/27-13:59:18.846 2dc4 Manual compaction at level-0 from '\x00\x1c\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x1d\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/12/27-13:59:20.983 4cec Compacting 1@1 + 4@2 files
+2024/12/27-13:59:21.146 4cec Generated table #163@1: 75515 keys, 2219134 bytes
+2024/12/27-13:59:21.283 4cec Generated table #164@1: 33632 keys, 2206434 bytes
+2024/12/27-13:59:21.579 4cec Generated table #165@1: 45786 keys, 2204936 bytes
+2024/12/27-13:59:21.625 4cec Generated table #166@1: 9633 keys, 408527 bytes
+2024/12/27-13:59:21.625 4cec Compacted 1@1 + 4@2 files => 7039031 bytes
+2024/12/27-13:59:21.647 4cec compacted to: files[ 0 0 4 0 0 0 0 ]
+2024/12/27-13:59:21.648 4cec Delete type=2 #156
+2024/12/27-13:59:21.648 4cec Delete type=2 #157
+2024/12/27-13:59:21.648 4cec Delete type=2 #158
+2024/12/27-13:59:21.648 4cec Delete type=2 #159
+2024/12/27-13:59:21.648 4cec Delete type=2 #162
+2024/12/27-14:04:24.792 4cec Manual compaction at level-0 from '\x00\x1e\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x1f\x00\x00\x00' @ 0 : 0; will stop at (end)

@@ -1,0 +1,82 @@
+2024/12/27-12:51:35.801 2aac Reusing MANIFEST D:\whatsapp-bot\_IGNORE_whatsapp-bot\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2024/12/27-12:51:35.808 2aac Recovering log #10009
+2024/12/27-12:51:35.840 2aac Reusing old log D:\whatsapp-bot\_IGNORE_whatsapp-bot\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/010009.log 
+2024/12/27-12:51:36.917 2cc0 Level-0 table #10050: started
+2024/12/27-12:51:37.031 2cc0 Level-0 table #10050: 647327 bytes OK
+2024/12/27-12:51:37.056 2cc0 Delete type=0 #10009
+2024/12/27-12:51:37.057 2aac Manual compaction at level-0 from '\x005\x00\x00\x00' @ 72057594037927935 : 1 .. '\x006\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/12/27-12:51:38.460 3c54 Compacting 1@1 + 3@2 files
+2024/12/27-12:51:38.520 3c54 Generated table #10051@1: 11372 keys, 191862 bytes
+2024/12/27-12:51:38.545 3c54 Generated table #10052@1: 32 keys, 4627 bytes
+2024/12/27-12:51:38.581 3c54 Generated table #10053@1: 2713 keys, 104739 bytes
+2024/12/27-12:51:38.605 3c54 Generated table #10054@1: 310 keys, 10410 bytes
+2024/12/27-12:51:38.630 3c54 Generated table #10055@1: 347 keys, 6132 bytes
+2024/12/27-12:51:38.655 3c54 Generated table #10056@1: 547 keys, 19118 bytes
+2024/12/27-12:51:38.655 3c54 Compacted 1@1 + 3@2 files => 336888 bytes
+2024/12/27-12:51:38.679 3c54 compacted to: files[ 0 0 6 63 0 0 0 ]
+2024/12/27-12:51:38.680 41a8 Compacting 1@2 + 10@3 files
+2024/12/27-12:51:38.783 41a8 Generated table #10057@2: 50135 keys, 2211812 bytes
+2024/12/27-12:51:38.887 41a8 Generated table #10058@2: 40587 keys, 2190073 bytes
+2024/12/27-12:51:38.980 41a8 Generated table #10059@2: 28327 keys, 2191107 bytes
+2024/12/27-12:51:39.072 41a8 Generated table #10060@2: 39119 keys, 2192574 bytes
+2024/12/27-12:51:39.199 41a8 Generated table #10061@2: 75340 keys, 2241606 bytes
+2024/12/27-12:51:39.359 41a8 Generated table #10062@2: 66508 keys, 2232746 bytes
+2024/12/27-12:51:39.496 41a8 Generated table #10063@2: 49092 keys, 2218529 bytes
+2024/12/27-12:51:39.598 41a8 Generated table #10064@2: 13147 keys, 2162118 bytes
+2024/12/27-12:51:39.670 41a8 Generated table #10065@2: 2049 keys, 2145839 bytes
+2024/12/27-12:51:39.750 41a8 Generated table #10066@2: 1067 keys, 1454916 bytes
+2024/12/27-12:51:39.750 41a8 Compacted 1@2 + 10@3 files => 21241320 bytes
+2024/12/27-12:51:39.774 41a8 compacted to: files[ 0 0 5 63 0 0 0 ]
+2024/12/27-12:51:39.776 41a8 Delete type=2 #10005
+2024/12/27-12:51:39.776 41a8 Delete type=2 #10006
+2024/12/27-12:51:39.776 41a8 Delete type=2 #10007
+2024/12/27-12:51:39.776 41a8 Delete type=2 #10008
+2024/12/27-12:51:39.776 41a8 Delete type=2 #10011
+2024/12/27-12:51:39.777 41a8 Delete type=2 #10012
+2024/12/27-12:51:39.777 41a8 Delete type=2 #10013
+2024/12/27-12:51:39.777 41a8 Delete type=2 #10014
+2024/12/27-12:51:39.777 41a8 Delete type=2 #10019
+2024/12/27-12:51:39.777 41a8 Delete type=2 #10020
+2024/12/27-12:51:39.777 41a8 Delete type=2 #10021
+2024/12/27-12:51:39.777 41a8 Delete type=2 #10022
+2024/12/27-12:51:39.778 41a8 Delete type=2 #10023
+2024/12/27-12:51:39.778 41a8 Delete type=2 #10050
+2024/12/27-12:51:39.778 41a8 Delete type=2 #10051
+2024/12/27-12:51:40.578 41a8 Compacting 1@2 + 5@3 files
+2024/12/27-12:51:40.706 41a8 Generated table #10067@2: 32643 keys, 2207385 bytes
+2024/12/27-12:51:40.820 41a8 Generated table #10068@2: 38711 keys, 2191428 bytes
+2024/12/27-12:51:40.946 41a8 Generated table #10069@2: 23588 keys, 2264683 bytes
+2024/12/27-12:51:41.061 41a8 Generated table #10070@2: 20292 keys, 2305485 bytes
+2024/12/27-12:51:41.142 41a8 Generated table #10071@2: 4079 keys, 1946691 bytes
+2024/12/27-12:51:41.142 41a8 Compacted 1@2 + 5@3 files => 10915672 bytes
+2024/12/27-12:51:41.166 41a8 compacted to: files[ 0 0 4 63 0 0 0 ]
+2024/12/27-12:51:41.167 41a8 Delete type=2 #10024
+2024/12/27-12:51:41.167 41a8 Delete type=2 #10025
+2024/12/27-12:51:41.167 41a8 Delete type=2 #10026
+2024/12/27-12:51:41.168 41a8 Delete type=2 #10027
+2024/12/27-12:51:41.168 41a8 Delete type=2 #10038
+2024/12/27-12:51:41.168 41a8 Delete type=2 #10053
+2024/12/27-12:51:44.376 41a8 Compacting 1@2 + 10@3 files
+2024/12/27-12:51:44.456 41a8 Generated table #10072@2: 2047 keys, 2147905 bytes
+2024/12/27-12:51:44.527 41a8 Generated table #10073@2: 2166 keys, 2148074 bytes
+2024/12/27-12:51:44.597 41a8 Generated table #10074@2: 2742 keys, 2150444 bytes
+2024/12/27-12:51:44.678 41a8 Generated table #10075@2: 1968 keys, 2143579 bytes
+2024/12/27-12:51:44.760 41a8 Generated table #10076@2: 4103 keys, 2154234 bytes
+2024/12/27-12:51:44.830 41a8 Generated table #10077@2: 2410 keys, 2146151 bytes
+2024/12/27-12:51:44.923 41a8 Generated table #10078@2: 31303 keys, 2199053 bytes
+2024/12/27-12:51:45.038 41a8 Generated table #10079@2: 26839 keys, 2276166 bytes
+2024/12/27-12:51:45.153 41a8 Generated table #10080@2: 25545 keys, 2277753 bytes
+2024/12/27-12:51:45.267 41a8 Generated table #10081@2: 27388 keys, 2273620 bytes
+2024/12/27-12:51:45.267 41a8 Compacted 1@2 + 10@3 files => 21916979 bytes
+2024/12/27-12:51:45.291 41a8 compacted to: files[ 0 0 3 63 0 0 0 ]
+2024/12/27-12:51:45.292 41a8 Delete type=2 #9957
+2024/12/27-12:51:45.292 41a8 Delete type=2 #10029
+2024/12/27-12:51:45.292 41a8 Delete type=2 #10030
+2024/12/27-12:51:45.292 41a8 Delete type=2 #10031
+2024/12/27-12:51:45.292 41a8 Delete type=2 #10032
+2024/12/27-12:51:45.292 41a8 Delete type=2 #10033
+2024/12/27-12:51:45.293 41a8 Delete type=2 #10034
+2024/12/27-12:51:45.293 41a8 Delete type=2 #10035
+2024/12/27-12:51:45.293 41a8 Delete type=2 #10036
+2024/12/27-12:51:45.293 41a8 Delete type=2 #10047
+2024/12/27-12:51:45.293 41a8 Delete type=2 #10052

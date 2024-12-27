@@ -1,97 +1,71 @@
-const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
-const { google } = require('googleapis');
-const fs = require('fs');
-const express = require('express');
+import whatsappweb from 'whatsapp-web.js';
+const { Client, LocalAuth } = whatsappweb;
+import qrcode from 'qrcode-terminal';
+import express from 'express';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
-const TOKEN_PATH = 'token.json';
-const CREDENTIALS_PATH = 'credentials.json';
-const credentials = JSON.parse(fs.readFileSync(CREDENTIALS_PATH));
+const firebaseConfig = {
+  // תמלא את זה מה-Firebase Console
+  apiKey: "AIzaSyD5jf0fpog-MXZQBcCu_2D9XsrdKxuG1xk",
+  authDomain: "whatsapp-bot-97e72.firebaseapp.com",
+  projectId: "whatsapp-bot-97e72",
+  storageBucket: "whatsapp-bot-97e72.firebasestorage.app",
+  messagingSenderId: "553746243088",
+  appId:"1:553746243088:web:5cbe509ceffdd37565f495"
+};
 
-// הגדרת שרת Express
+const firebaseApp = initializeApp(firebaseConfig);
+const db = getFirestore(firebaseApp);
+
 app.get('/', (req, res) => {
-    const code = req.query.code;
-    if (code) {
-        res.send('Authorization successful! You can close this window.');
-        global.authCode = code;
-    } else {
-        res.send('No authorization code received.');
-    }
+    res.send('WhatsApp Bot is running!');
 });
 
-const server = app.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
 
-async function authorize() {
-    const { client_secret, client_id } = credentials.web;
-    const oAuth2Client = new google.auth.OAuth2(
-        client_id,
-        client_secret,
-        'http://localhost:3000'
-    );
-
+async function saveToFirestore(key, value) {
     try {
-        if (fs.existsSync(TOKEN_PATH)) {
-            const token = fs.readFileSync(TOKEN_PATH);
-            oAuth2Client.setCredentials(JSON.parse(token));
-            return oAuth2Client;
-        }
-        return await getNewToken(oAuth2Client);
-    } catch (err) {
-        return await getNewToken(oAuth2Client);
+        await addDoc(collection(db, 'data'), {
+            key,
+            value,
+            timestamp: Date.now()
+        });
+        return true;
+    } catch (error) {
+        console.error('Error saving to Firestore:', error);
+        return false;
     }
 }
 
-async function getNewToken(oAuth2Client) {
-    const authUrl = oAuth2Client.generateAuthUrl({
-        access_type: 'offline',
-        scope: SCOPES,
-    });
-    console.log('Authorize this app by visiting this url:', authUrl);
-    
-    const code = await new Promise((resolve) => {
-        const checkCode = setInterval(() => {
-            if (global.authCode) {
-                clearInterval(checkCode);
-                resolve(global.authCode);
-            }
-        }, 1000);
-    });
-
-    const { tokens } = await oAuth2Client.getToken(code);
-    oAuth2Client.setCredentials(tokens);
-    fs.writeFileSync(TOKEN_PATH, JSON.stringify(tokens));
-    console.log('Token stored to', TOKEN_PATH);
-    return oAuth2Client;
+async function getFromFirestore(searchTerm) {
+    try {
+        const q = query(
+            collection(db, 'data'),
+            where('key', '>=', searchTerm.toLowerCase()),
+            where('key', '<=', searchTerm.toLowerCase() + '\uf8ff')
+        );
+        const snapshot = await getDocs(q);
+        return snapshot.docs.map(doc => ({ key: doc.data().key, value: doc.data().value }));
+    } catch (error) {
+        console.error('Error getting from Firestore:', error);
+        return [];
+    }
 }
 
-async function saveToSheet(auth, key, value) {
-    const sheets = google.sheets({ version: 'v4', auth });
-    const spreadsheetId = '1W193zXhaDQgraE1DRhi1e5gJ4hMHbvUSo-imnxzDymI';
-    await sheets.spreadsheets.values.append({
-        spreadsheetId,
-        range: 'Sheet1!A:B',
-        valueInputOption: 'RAW',
-        resource: {
-            values: [[key, value]],
-        },
-    });
-}
-
-async function getFromSheet(auth, key) {
-    const sheets = google.sheets({ version: 'v4', auth });
-    const spreadsheetId = '1W193zXhaDQgraE1DRhi1e5gJ4hMHbvUSo-imnxzDymI';
-    const res = await sheets.spreadsheets.values.get({
-        spreadsheetId,
-        range: 'Sheet1!A:B',
-    });
-    const rows = res.data.values || [];
-    const found = rows.find((row) => row[0] === key);
-    return found ? found[1] : 'לא נמצא';
+async function getAllFromFirestore() {
+    try {
+        const snapshot = await getDocs(collection(db, 'data'));
+        return snapshot.docs.map(doc => ({ key: doc.data().key, value: doc.data().value }));
+    } catch (error) {
+        console.error('Error getting all data:', error);
+        return [];
+    }
 }
 
 const client = new Client({
@@ -106,7 +80,6 @@ client.on('qr', qr => {
     console.log('QR Code generated. Please scan it with WhatsApp.');
 });
 
-// הוספת לוגים לדיבאג
 client.on('loading_screen', (percent, message) => {
     console.log('Loading:', percent, '%', message);
 });
@@ -119,97 +92,47 @@ client.on('ready', () => {
     console.log('Bot is ready and waiting for messages!');
 });
 
-// הוספת טיפול בשגיאות
 client.on('disconnected', (reason) => {
     console.log('Client was disconnected:', reason);
 });
 
-async function ensureAuth() {
-    try {
-        const auth = await authorize();
-        // בדיקת תקינות הטוקן
-        const sheets = google.sheets({ version: 'v4', auth });
-        await sheets.spreadsheets.values.get({
-            spreadsheetId: '1W193zXhaDQgraE1DRhi1e5gJ4hMHbvUSo-imnxzDymI',
-            range: 'Sheet1!A1',
-        });
-        return auth;
-    } catch (error) {
-        console.log('Auth error, getting new token...');
-        return await getNewToken(new google.auth.OAuth2(
-            credentials.web.client_id,
-            credentials.web.client_secret,
-            'http://localhost:3000'
-        ));
-    }
-}
-
-// עדכון הקוד של הטיפול בהודעות
-// [כל הקוד הקיים עד client.on('message') נשאר אותו דבר]
-
-// רק event listener אחד להודעות
 client.on('message', async msg => {
     console.log('New message received:', msg.body);
     
     try {
-        const auth = await ensureAuth();
         const cleanMessage = msg.body.replace(/^\u05A0/, '').trim();
         
-        // פקודה להצגת כל המידע
         if (cleanMessage === 'הצג הכל') {
-            const sheets = google.sheets({ version: 'v4', auth });
-            const res = await sheets.spreadsheets.values.get({
-                spreadsheetId: '1W193zXhaDQgraE1DRhi1e5gJ4hMHbvUSo-imnxzDymI',
-                range: 'Sheet1!A:B',
-            });
-            
-            const rows = res.data.values || [];
-            if (rows.length > 0) {
-                const dataRows = rows.slice(1);
-                if (dataRows.length > 0) {
-                    const response = dataRows.map((row, index) => 
-                        `${index + 1}. ${row[0]}: ${row[1]}`
-                    ).join('\n\n');
-                    msg.reply(`📋 כל המידע השמור:\n\n${response}`);
-                } else {
-                    msg.reply('אין עדיין מידע שמור בקובץ');
-                }
+            const allData = await getAllFromFirestore();
+            if (allData.length > 0) {
+                const response = allData.map((item, index) => 
+                    `${index + 1}. ${item.key}: ${item.value}`
+                ).join('\n\n');
+                msg.reply(`📋 כל המידע השמור:\n\n${response}`);
             } else {
-                msg.reply('אין עדיין מידע שמור בקובץ');
+                msg.reply('אין עדיין מידע שמור במערכת');
             }
         }
-        // פקודת שמירה
         else if (cleanMessage.startsWith('שמור ')) {
             const parts = cleanMessage.slice(5).split(':');
             if (parts.length === 2) {
                 const key = parts[0].trim();
                 const value = parts[1].trim();
-                await saveToSheet(auth, key, value);
-                msg.reply(`✅ נשמר בהצלחה: ${key} -> ${value}`);
-                console.log('Data saved:', { key, value });
+                const saved = await saveToFirestore(key, value);
+                if (saved) {
+                    msg.reply(`✅ נשמר בהצלחה: ${key} -> ${value}`);
+                } else {
+                    msg.reply('❌ אירעה שגיאה בשמירת המידע');
+                }
             } else {
                 msg.reply('❌ שגיאה: התבנית צריכה להיות "שמור [שם המידע]: [ערך]"');
             }
         }
-        // חיפוש מידע
         else {
-            const searchTerm = cleanMessage;
-            console.log('Searching for:', searchTerm);
-            
-            const sheets = google.sheets({ version: 'v4', auth });
-            const res = await sheets.spreadsheets.values.get({
-                spreadsheetId: '1W193zXhaDQgraE1DRhi1e5gJ4hMHbvUSo-imnxzDymI',
-                range: 'Sheet1!A:B',
-            });
-            
-            const rows = res.data.values || [];
-            const found = rows.filter(row => 
-                row[0]?.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            
-            if (found.length > 0) {
-                const response = found.map(row => 
-                    `🔍 ${row[0]}: ${row[1]}`
+            const results = await getFromFirestore(cleanMessage);
+            if (results.length > 0) {
+                const response = results.map(item => 
+                    `🔍 ${item.key}: ${item.value}`
                 ).join('\n\n');
                 msg.reply(`מצאתי את המידע הבא:\n\n${response}`);
             } else {

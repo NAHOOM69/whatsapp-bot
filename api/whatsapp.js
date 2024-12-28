@@ -6,11 +6,13 @@ import { initializeApp, getFirestore, collection, addDoc, query, where, getDocs 
 const firebaseConfig = {
   apiKey: "AIzaSyD5jf0fpog-MXZQBcCu_2D9XsrdKxuG1xk",
   authDomain: "whatsapp-bot-97e72.firebaseapp.com",
+  databaseURL: "https://whatsapp-bot-97e72-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "whatsapp-bot-97e72",
   storageBucket: "whatsapp-bot-97e72.firebasestorage.app",
   messagingSenderId: "553746243088",
   appId: "1:553746243088:web:5cbe509ceffdd37565f495"
 };
+
 
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);

@@ -1,7 +1,9 @@
 import whatsappweb from 'whatsapp-web.js';
 const { Client, LocalAuth } = whatsappweb;
 import qrcode from 'qrcode-terminal';
-import { initializeApp, getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
+
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,

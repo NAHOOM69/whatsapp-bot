@@ -22,8 +22,10 @@ const client = new Client({
   authStrategy: new LocalAuth(),
   puppeteer: {
     args: ['--no-sandbox', '--disable-setuid-sandbox']
-  }
+  },
+  useDeprecatedSessionAuth: true // משבית את השימוש ב-LocalWebCache
 });
+
 
 // Function to save data to Firestore
 async function saveToFirestore(key, value) {

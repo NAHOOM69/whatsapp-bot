@@ -2,10 +2,11 @@
   "name": "whatsapp-bot",
   "version": "1.0.0",
   "description": "WhatsApp Bot",
-  "main": "bot.js",
+  "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node bot.js"
+    "start": "node index.js",
+    "vercel-build": ""
   },
   "engines": {
     "node": ">=14.x"

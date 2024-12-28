@@ -1,3 +1,5 @@
-2024/12/27-18:44:58.393 4750 Reusing MANIFEST D:\whatsapp-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2024/12/27-18:44:58.395 4750 Recovering log #3
-2024/12/27-18:44:58.397 4750 Reusing old log D:\whatsapp-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/000003.log 
+2024/12/28-10:20:48.048 1bb4 Reusing MANIFEST D:\whatsapp-bot\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2024/12/28-10:20:48.049 1bb4 Recovering log #3
+2024/12/28-10:20:48.049 1bb4 Level-0 table #3: started
+2024/12/28-10:20:48.172 1bb4 Level-0 table #3: 16170 bytes OK
+2024/12/28-10:20:48.241 1bb4 Delete type=0 #3

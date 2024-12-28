@@ -18,10 +18,10 @@ const db = getFirestore(firebaseApp);
 const client = new Client({
   authStrategy: new LocalAuth(),
   puppeteer: {
-    args: ['--no-sandbox'],
-    // executablePath: '/path/to/chrome' // הסר שורה זו, אלא אם כן אתה משתמש בדפדפן מותקן במקום ב-Chromium של Puppeteer
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
   }
 });
+
 
 async function saveToFirestore(key, value) {
   try {

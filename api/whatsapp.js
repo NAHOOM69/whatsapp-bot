@@ -1,13 +1,8 @@
 import whatsappweb from 'whatsapp-web.js';
 const { Client, LocalAuth } = whatsappweb;
 import qrcode from 'qrcode-terminal';
-import express from 'express';
 import { initializeApp, getFirestore, collection, addDoc, query, where, getDocs } from 'firebase/firestore';
 
-const app = express();
-const port = process.env.PORT || 3000;
-
-// נתוני Firebase שלך
 const firebaseConfig = {
   apiKey: "AIzaSyD5jf0fpog-MXZQBcCu_2D9XsrdKxuG1xk",
   authDomain: "whatsapp-bot-97e72.firebaseapp.com",
@@ -26,10 +21,6 @@ const client = new Client({
     args: ['--no-sandbox'],
     // executablePath: '/path/to/chrome' // הסר שורה זו, אלא אם כן אתה משתמש בדפדפן מותקן במקום ב-Chromium של Puppeteer
   }
-});
-
-app.get('/', (req, res) => {
-  res.send('WhatsApp Bot is running!');
 });
 
 async function saveToFirestore(key, value) {
@@ -143,13 +134,18 @@ client.on('message', async msg => {
 
 // אתחול ה-client יתבצע לאחר שהשרת מוכן
 async function startBot() {
-    console.log('Initializing WhatsApp client...');
-    await client.initialize();
-    console.log('WhatsApp client initialized successfully.');
+  console.log('Initializing WhatsApp client...');
+  await client.initialize();
+  console.log('WhatsApp client initialized successfully.');
 }
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-    console.log(`script fully loaded`);
-    startBot(); // הפעל את הבוט רק לאחר שהשרת מוכן
-});
+export default async function handler(req, res) {
+  if (!client.info) {
+    // אם ה client עדיין לא אותחל
+    await startBot();
+    res.status(200).send('WhatsApp Bot is being initialized!');
+  }
+  else {
+    res.status(200).send('WhatsApp Bot is running!');
+  }
+}

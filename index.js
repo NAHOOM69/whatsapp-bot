@@ -7,6 +7,7 @@ import { initializeApp, getFirestore, collection, addDoc, query, where, getDocs 
 const app = express();
 const port = process.env.PORT || 3000;
 
+// נתוני Firebase שלך
 const firebaseConfig = {
   apiKey: "AIzaSyD5jf0fpog-MXZQBcCu_2D9XsrdKxuG1xk",
   authDomain: "whatsapp-bot-97e72.firebaseapp.com",
@@ -22,7 +23,8 @@ const db = getFirestore(firebaseApp);
 const client = new Client({
   authStrategy: new LocalAuth(),
   puppeteer: {
-    args: ['--no-sandbox']
+    args: ['--no-sandbox'],
+    // executablePath: '/path/to/chrome' // הסר שורה זו, אלא אם כן אתה משתמש בדפדפן מותקן במקום ב-Chromium של Puppeteer
   }
 });
 
@@ -139,10 +141,15 @@ client.on('message', async msg => {
   }
 });
 
-client.initialize();
+// אתחול ה-client יתבצע לאחר שהשרת מוכן
+async function startBot() {
+    console.log('Initializing WhatsApp client...');
+    await client.initialize();
+    console.log('WhatsApp client initialized successfully.');
+}
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
-    // בדיקה שהסקריפט הגיע לפה
     console.log(`script fully loaded`);
+    startBot(); // הפעל את הבוט רק לאחר שהשרת מוכן
 });

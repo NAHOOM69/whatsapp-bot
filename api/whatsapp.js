@@ -26,6 +26,20 @@ const client = new Client({
   useDeprecatedSessionAuth: true // משבית את השימוש ב-LocalWebCache
 });
 
+(async () => {
+  const puppeteer = require('puppeteer');
+  try {
+    const browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+    console.log('Puppeteer launched successfully!');
+    await browser.close();
+  } catch (err) {
+    console.error('Error launching Puppeteer:', err);
+  }
+})();
+
+
 
 // Function to save data to Firestore
 async function saveToFirestore(key, value) {

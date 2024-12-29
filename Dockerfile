@@ -49,7 +49,7 @@ COPY . .
 
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-
+RUN apt-get install -y chromium
 RUN apt-get update && apt-get install -y chromium
 
 

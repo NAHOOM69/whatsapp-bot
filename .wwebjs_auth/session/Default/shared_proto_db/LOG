@@ -1,2 +1,3 @@
-2024/12/27-14:04:24.456 2dc4 Creating DB D:\whatsapp-bot\.wwebjs_auth\session\Default\shared_proto_db since it was missing.
-2024/12/27-14:04:24.562 2dc4 Reusing MANIFEST D:\whatsapp-bot\.wwebjs_auth\session\Default\shared_proto_db/MANIFEST-000001
+2024/12/30-18:21:55.253 4db0 Reusing MANIFEST D:\whatsapp-bot\.wwebjs_auth\session\Default\shared_proto_db/MANIFEST-000001
+2024/12/30-18:21:55.254 4db0 Recovering log #3
+2024/12/30-18:21:55.255 4db0 Reusing old log D:\whatsapp-bot\.wwebjs_auth\session\Default\shared_proto_db/000003.log 

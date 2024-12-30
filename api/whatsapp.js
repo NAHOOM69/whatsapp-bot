@@ -6,12 +6,14 @@ import { getFirestore, collection, addDoc, query, where, getDocs } from 'firebas
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID
+  apiKey: "AIzaSyD5jf0fpog-MXZQBcCu_2D9XsrdKxuG1xk",
+  authDomain: "whatsapp-bot-97e72.firebaseapp.com",
+  databaseURL: "https://whatsapp-bot-97e72-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "whatsapp-bot-97e72",
+  storageBucket: "whatsapp-bot-97e72.firebasestorage.app",
+  messagingSenderId: "553746243088",
+  appId: "1:553746243088:web:5cbe509ceffdd37565f495",
+  measurementId: "G-EPM8RCKQTC"
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
@@ -21,40 +23,39 @@ const db = getFirestore(firebaseApp);
 const client = new Client({
   authStrategy: new LocalAuth(),
   puppeteer: {
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe', // Adjust path as needed
     args: ['--no-sandbox', '--disable-setuid-sandbox']
-  },
-  useDeprecatedSessionAuth: true // משבית את השימוש ב-LocalWebCache
-});
-
-(async () => {
-  const puppeteer = require('puppeteer');
-  try {
-    const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    console.log('Puppeteer launched successfully!');
-    await browser.close();
-  } catch (err) {
-    console.error('Error launching Puppeteer:', err);
   }
-})();
-
-
+});
 
 // Function to save data to Firestore
 async function saveToFirestore(key, value) {
   try {
+    // Validation to ensure key and value are non-empty strings
+    if (!key || typeof key !== 'string' || !value || typeof value !== 'string') {
+      throw new Error('Invalid key or value. Both must be non-empty strings.');
+    }
+
+    // Validate the length of key and value
+    if (key.length > 100 || value.length > 500) {
+      throw new Error('Key or value exceeds allowed length.');
+    }
+
     await addDoc(collection(db, 'data'), {
-      key,
-      value,
+      key: key.trim(),
+      value: value.trim(),
       timestamp: Date.now()
     });
+
+    console.log(`Data saved successfully: ${key} -> ${value}`);
     return true;
   } catch (error) {
-    console.error('Error saving to Firestore:', error);
+    console.error('Error saving to Firestore:', error.message);
     return false;
   }
 }
+
+
 
 // Function to get data from Firestore by search term
 async function getFromFirestore(searchTerm) {

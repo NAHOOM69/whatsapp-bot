@@ -28,114 +28,7 @@ const client = new Client({
     }
 });
 
-// Function to get the next available index
-async function getNextIndex() {
-    try {
-        const snapshot = await getDocs(query(collection(db, 'data'), orderBy('index', 'desc')));
-        if (snapshot.empty) {
-            return 1;
-        } else {
-            const lastDoc = snapshot.docs[0];
-            return (lastDoc.data().index || 0) + 1;
-        }
-    } catch (error) {
-        console.error('Error getting next index:', error);
-        return -1; // Indicate an error
-    }
-}
-
-// Function to save data to Firestore with an index
-async function saveToFirestore(key, value) {
-    try {
-        if (!key || typeof key !== 'string' || !value || typeof value !== 'string') {
-            throw new Error('Invalid key or value. Both must be non-empty strings.');
-        }
-        if (key.length > 100 || value.length > 500) {
-            throw new Error('Key or value exceeds allowed length.');
-        }
-
-        const nextIndex = await getNextIndex();
-        if (nextIndex === -1) {
-            throw new Error('Failed to get next index.');
-        }
-
-        await addDoc(collection(db, 'data'), {
-            index: nextIndex, // Add the index field
-            key: key.trim().toLowerCase(),
-            value: value.trim(),
-            timestamp: Date.now()
-        });
-
-        console.log(`Data saved successfully: ${key} -> ${value} (index: ${nextIndex})`);
-        return true;
-    } catch (error) {
-        console.error('Error saving to Firestore:', error.message);
-        return false;
-    }
-}
-
-// Function to get data from Firestore by partial search term
-async function getFromFirestore(searchTerm) {
-    try {
-        const q = query(
-            collection(db, 'data'),
-            orderBy('key')
-        );
-        const snapshot = await getDocs(q);
-        const results = [];
-        snapshot.docs.forEach(doc => {
-            const data = doc.data();
-            if (data.key.includes(searchTerm.toLowerCase())) {
-                results.push({ id: doc.id, index: data.index, key: data.key, value: data.value });
-            }
-        });
-        return results;
-    } catch (error) {
-        console.error('Error getting from Firestore:', error);
-        return [];
-    }
-}
-
-// Function to get all data from Firestore
-async function getAllFromFirestore() {
-    try {
-        const snapshot = await getDocs(query(collection(db, 'data'), orderBy('index')));
-        return snapshot.docs.map(doc => ({ id: doc.id, index: doc.data().index, key: doc.data().key, value: doc.data().value }));
-    } catch (error) {
-        console.error('Error getting all data:', error);
-        return [];
-    }
-}
-
-// Function to update data in Firestore
-async function updateFirestoreData(docId, newKey, newValue) {
-    try {
-        const docRef = doc(db, 'data', docId);
-        await updateDoc(docRef, {
-            key: newKey.trim().toLowerCase(),
-            value: newValue.trim(),
-            timestamp: Date.now()
-        });
-        console.log(`Data updated successfully: ${newKey} -> ${newValue}`);
-        return true;
-    } catch (error) {
-        console.error('Error updating data in Firestore:', error);
-        return false;
-    }
-}
-
-// Function to delete data from Firestore
-async function deleteFromFirestore(docId) {
-    try {
-        const docRef = doc(db, 'data', docId);
-        await deleteDoc(docRef);
-        console.log(`Data deleted successfully: ${docId}`);
-        return true;
-    } catch (error) {
-        console.error('Error deleting data from Firestore:', error);
-        return false;
-    }
-}
+// ... (כל הפונקציות האחרות כמו getNextIndex, saveToFirestore וכו' נשארות אותו הדבר) ...
 
 // WhatsApp client events
 client.on('qr', qr => {
@@ -160,11 +53,6 @@ client.on('disconnected', (reason) => {
     console.log('Client was disconnected:', reason);
 });
 
-client.on('message', async msg => {
-    console.log('New message received:', msg.body);
-    await handleMessage(msg); // Call the message handler
-});
-
 // Function to handle incoming messages
 async function handleMessage(msg) {
     try {
@@ -172,6 +60,7 @@ async function handleMessage(msg) {
 
         if (cleanMessage === 'הצג הכל') {
             const allData = await getAllFromFirestore();
+            console.log('All data from Firestore:', allData);
             if (allData.length > 0) {
                 const response = allData.map((item) =>
                     `${item.index}. ${item.key}: ${item.value}`
@@ -272,18 +161,30 @@ async function startBot() {
 
 startBot(); // Call startBot() outside of the handler
 
-// Exported handler for serverless function
+// פונקציה שבודקת אם יש הודעות חדשות כל 5 שניות
+async function checkNewMessages() {
+    try {
+        const chats = await client.getChats();
+        for (const chat of chats) {
+            const messages = await chat.fetchMessages({ limit: 10 }); // אפשר לשנות את ה limit
+            for (const msg of messages) {
+                if (!msg.fromMe && !msg.hasBeenRead) {
+                    console.log(`New message from ${msg.from}: ${msg.body}`);
+                    await handleMessage(msg);
+                    await msg.markAsRead(); // סמן את ההודעה כנקראה
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+    }
+}
+
+setInterval(checkNewMessages, 5000); // בדוק כל 5 שניות (5000 מילישניות)
+
+// ה-handler הפשוט מחזיר הודעה שהבוט פעיל
 export default async function handler(req, res) {
     console.log('Handler called.');
-
-    // Check if the bot is already initialized
-    if (!client.info) {
-        console.log('WhatsApp client not initialized.');
-        return res.status(500).send('WhatsApp client not initialized.');
-    }
-
     console.log('WhatsApp bot is running.');
-
-    // Respond to the request
     res.status(200).send('WhatsApp Bot is running!');
 }
